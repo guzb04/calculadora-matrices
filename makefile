@@ -1,3 +1,7 @@
+
+./obj:
+	mkdir ./obj
+
 all: calculadoraMatriz
 
 calculadoraMatriz: ./obj/main.o ./obj/matriz.o
