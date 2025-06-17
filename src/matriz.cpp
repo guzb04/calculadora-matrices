@@ -1,15 +1,16 @@
 #include "../include/matriz.h"
 #include <cstddef>
-struct matrizFloat {
+#include <cstdio>
+struct matriz {
 
   int filas, columnas;
 
   float **celdas;
 };
 
-TMatrizFloat crearMatrizFloatVacia(int n, int m) {
+TMatriz crearMatrizVacia(int n, int m) {
 
-  TMatrizFloat nuevaMatriz = new matrizFloat;
+  TMatriz nuevaMatriz = new matriz;
 
   float **celdas = new float *[n];
   celdas[0] = new float[n * m];
@@ -35,7 +36,7 @@ TMatrizFloat crearMatrizFloatVacia(int n, int m) {
   return nuevaMatriz;
 }
 
-void liberarMatrizFloat(TMatrizFloat &matriz) {
+void liberarMatriz(TMatriz &matriz) {
   delete[] matriz->celdas[0];
   delete[] matriz->celdas;
 
@@ -44,19 +45,17 @@ void liberarMatrizFloat(TMatrizFloat &matriz) {
   matriz = NULL;
 }
 
-int filasMatrizFloat(TMatrizFloat matriz) { return matriz->filas; }
+int filasMatriz(TMatriz matriz) { return matriz->filas; }
 
-int columnasMatrizFloat(TMatrizFloat matriz) { return matriz->columnas; }
+int columnasMatriz(TMatriz matriz) { return matriz->columnas; }
 
-void cargarMatrizFloat(TMatrizFloat matriz, int fila, int columna,
-                       float valor) {
+void cargarMatriz(TMatriz matriz, int fila, int columna, float valor) {
   matriz->celdas[fila][columna] = valor;
 }
 
-TMatrizFloat escalarPorMatrizFloat(int n, TMatrizFloat matriz) {
+TMatriz escalarPorMatriz(int n, TMatriz matriz) {
 
-  TMatrizFloat aRetornar =
-      crearMatrizFloatVacia(matriz->filas, matriz->columnas);
+  TMatriz aRetornar = crearMatrizVacia(matriz->filas, matriz->columnas);
 
   for (int i = 0; i < matriz->filas; i++) {
     for (int j = 0; j < matriz->columnas; j++) {
@@ -68,15 +67,15 @@ TMatrizFloat escalarPorMatrizFloat(int n, TMatrizFloat matriz) {
   return aRetornar;
 }
 
-float celdaMatrizFloat(int fila, int col, TMatrizFloat matriz) {
+float celdaMatriz(int fila, int col, TMatriz matriz) {
   return matriz->celdas[fila][col];
 }
 
-TMatrizFloat sumarMatricesFloat(TMatrizFloat m1, TMatrizFloat m2) {
+TMatriz sumarMatrices(TMatriz m1, TMatriz m2) {
   if (m1->filas != m2->filas || m2->columnas != m1->columnas) {
     return NULL;
   } else {
-    TMatrizFloat nuevaMatriz = crearMatrizFloatVacia(m1->filas, m1->columnas);
+    TMatriz nuevaMatriz = crearMatrizVacia(m1->filas, m1->columnas);
     for (int i = 0; i < m1->filas; i++) {
       for (int j = 0; j < m1->columnas; j++) {
         nuevaMatriz->celdas[i][j] = m1->celdas[i][j] + m2->celdas[i][j];
@@ -86,12 +85,11 @@ TMatrizFloat sumarMatricesFloat(TMatrizFloat m1, TMatrizFloat m2) {
   }
 }
 
-TMatrizFloat multiplicarMatrices(TMatrizFloat mIzq, TMatrizFloat mDer) {
+TMatriz multiplicarMatrices(TMatriz mIzq, TMatriz mDer) {
   if (mIzq->columnas != mDer->filas) {
     return NULL;
   } else {
-    TMatrizFloat nuevaMatriz =
-        crearMatrizFloatVacia(mIzq->filas, mDer->columnas);
+    TMatriz nuevaMatriz = crearMatrizVacia(mIzq->filas, mDer->columnas);
 
     float c = 0;
 
@@ -101,8 +99,40 @@ TMatrizFloat multiplicarMatrices(TMatrizFloat mIzq, TMatrizFloat mDer) {
 
           c = c + (mIzq->celdas[i][k] * mDer->celdas[k][j]);
         }
-        cargarMatrizFloat(nuevaMatriz, i, j, c);
+        cargarMatriz(nuevaMatriz, i, j, c);
+        c=0;
       }
     }
+    return nuevaMatriz;
   }
+}
+
+float calcularDeterminante(TMatriz matriz) {
+  if (matriz->filas != matriz->columnas) {
+    return 0;
+  }
+
+  return 0;
+}
+
+void imprimirMatriz(TMatriz matriz) {
+
+  printf("Matriz de %d filas por %d columnas: \n", matriz->filas,
+         matriz->columnas);
+
+  for (int i = 0; i < matriz->filas; i++) {
+    printf("[");
+
+    for (int j = 0; j < matriz->columnas; j++) {
+      printf("%.2f", matriz->celdas[i][j]);
+
+      if (j != matriz->columnas - 1) {
+        printf("  ");
+      }
+    }
+
+    printf("]\n");
+  }
+
+  printf("\n");
 }
