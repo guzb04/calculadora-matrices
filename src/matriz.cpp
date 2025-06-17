@@ -100,16 +100,56 @@ TMatriz multiplicarMatrices(TMatriz mIzq, TMatriz mDer) {
           c = c + (mIzq->celdas[i][k] * mDer->celdas[k][j]);
         }
         cargarMatriz(nuevaMatriz, i, j, c);
-        c=0;
+        c = 0;
       }
     }
     return nuevaMatriz;
   }
 }
 
+float calcularDeterminante1x1(TMatriz matriz) { return matriz->celdas[0][0]; }
+
+float calcularDeterminante2x2(TMatriz matriz) {
+  float c = (matriz->celdas[0][0] * matriz->celdas[1][1]) -
+            (matriz->celdas[1][0] * matriz->celdas[0][1]);
+
+  return c;
+}
+
 float calcularDeterminante(TMatriz matriz) {
   if (matriz->filas != matriz->columnas) {
     return 0;
+  } else if (matriz->filas == 2) {
+    return calcularDeterminante2x2(matriz);
+  } else if (matriz->filas == 1) {
+    return calcularDeterminante1x1(matriz);
+  } else {
+
+    float det = 0;
+
+    for (int i = 0; i < matriz->columnas; i++) {
+      float temp = matriz->celdas[0][i];
+      TMatriz matrizRecursiva =
+          crearMatrizVacia(matriz->filas - 1, matriz->columnas - 1);
+      if (i % 2 == 1) {
+        temp = -temp;
+      }
+
+      for (int j = 1; j < matriz->filas; j++) {
+        for (int k = 0; k != i; k++) {
+          cargarMatriz(matrizRecursiva, j - 1, k, matriz->celdas[j][k]);
+        }
+        for (int k = i + 1; k < matriz->columnas; k++) {
+          cargarMatriz(matrizRecursiva, j-1, k-1, matriz->celdas[j][k]);
+        }
+      }
+
+      temp = temp*calcularDeterminante(matrizRecursiva);
+      det = det + temp;
+
+    }
+
+    return det;
   }
 
   return 0;

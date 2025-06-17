@@ -36,9 +36,13 @@ TMatriz sumarMatrices(TMatriz m1, TMatriz m2);
 // filas de mDer, devuelve NULL.
 TMatriz multiplicarMatrices(TMatriz mIzq, TMatriz mDer);
 
-//Calcula el determinante de una matriz, si no es cuadrada retorna 0 y no hace ningun chequeo extra. TODO
+// Calcula el determinante de una matriz, si no es cuadrada retorna 0 y no hace
+// ningun chequeo extra, usa funciones auxiliares para2x2 y 1x1, en caso
+// de ser mayor a 2x2 hace un llamado recursivo hasta llegar a 2x2.
 float calcularDeterminante(TMatriz matriz);
 
+// Imprime una matriz, una fila por renglon encerrada en "[], muestra dos
+// digitos despues de la coma"
 void imprimirMatriz(TMatriz matriz);
 
 #endif // !MATRIZ_H
