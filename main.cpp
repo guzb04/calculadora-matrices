@@ -32,6 +32,16 @@ int main() {
   imprimirMatriz(m5);
   printf("Determinante: %.2f\n\n", calcularDeterminante(m5));
 
+  TMatriz m7 = calcularAdjunta(m5);
+  printf("Adjunta: \n\n");
+  imprimirMatriz(m7);
+  TMatriz m8 = calcularInversa(m5);
+  printf("Inversa: \n\n");
+  imprimirMatriz(m8);
+  TMatriz m9 = multiplicarMatrices(m5, m8);
+  imprimirMatriz(m9);
+  
+
 
   for (int i = 0; i < filasMatriz(m2); i++) {
     for (int j = 0; j < columnasMatriz(m2); j++) {
@@ -42,6 +52,7 @@ int main() {
   imprimirMatriz(m1);
   imprimirMatriz(m2);
 
+
   TMatriz m3 = multiplicarMatrices(m1, m2);
 
   if (m3 != NULL) {
@@ -51,6 +62,11 @@ int main() {
            "las matrices");
   }
 
+  TMatriz m6 = calcularTraspuesta(m3);
+  printf("la traspuesta de m3 es: \n");
+
+  imprimirMatriz(m6);
+
   TMatriz m4 = sumarMatrices(m1, m2);
 
   if (m4 != NULL) {
@@ -58,6 +74,17 @@ int main() {
   } else {
     printf("la suma de matrices devuelve NULL, revisar filas y columnas");
   }
+
+
+  liberarMatriz(m1);
+  liberarMatriz(m2);
+  liberarMatriz(m3);
+  liberarMatriz(m4);
+  liberarMatriz(m5);
+  liberarMatriz(m6);
+  liberarMatriz(m7);
+  liberarMatriz(m8);
+  liberarMatriz(m9);
 
   return 0;
 }

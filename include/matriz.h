@@ -37,12 +37,21 @@ TMatriz sumarMatrices(TMatriz m1, TMatriz m2);
 TMatriz multiplicarMatrices(TMatriz mIzq, TMatriz mDer);
 
 // Calcula el determinante de una matriz, si no es cuadrada retorna 0 y no hace
-// ningun chequeo extra, usa funciones auxiliares para2x2 y 1x1, en caso
+// ningun chequeo extra, usa funciones auxiliares para 2x2 y 1x1, en caso
 // de ser mayor a 2x2 hace un llamado recursivo hasta llegar a 2x2.
 float calcularDeterminante(TMatriz matriz);
 
 // Imprime una matriz, una fila por renglon encerrada en "[], muestra dos
 // digitos despues de la coma"
 void imprimirMatriz(TMatriz matriz);
+
+//calcula la traspuesta de una matriz y la devuelve. 
+TMatriz calcularTraspuesta(TMatriz matriz);
+
+//calcula la adjunta de una matriz y la devuelve. si la matriz no es cuadrada, retorna NULL.
+TMatriz calcularAdjunta(TMatriz matriz);
+
+//calcula la inversa de una matriz y la devuelve. Si la matriz no es invertible (determinante == 0) retorna NULL.
+TMatriz calcularInversa(TMatriz matriz);
 
 #endif // !MATRIZ_H

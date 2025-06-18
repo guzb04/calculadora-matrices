@@ -140,13 +140,14 @@ float calcularDeterminante(TMatriz matriz) {
           cargarMatriz(matrizRecursiva, j - 1, k, matriz->celdas[j][k]);
         }
         for (int k = i + 1; k < matriz->columnas; k++) {
-          cargarMatriz(matrizRecursiva, j-1, k-1, matriz->celdas[j][k]);
+          cargarMatriz(matrizRecursiva, j - 1, k - 1, matriz->celdas[j][k]);
         }
       }
 
-      temp = temp*calcularDeterminante(matrizRecursiva);
+      temp = temp * calcularDeterminante(matrizRecursiva);
       det = det + temp;
 
+      liberarMatriz(matrizRecursiva);
     }
 
     return det;
@@ -175,4 +176,103 @@ void imprimirMatriz(TMatriz matriz) {
   }
 
   printf("\n");
+}
+
+TMatriz calcularTraspuesta(TMatriz matriz) {
+  TMatriz nuevaMatriz = crearMatrizVacia(matriz->columnas, matriz->filas);
+
+  for (int i = 0; i < matriz->columnas; i++) {
+    for (int j = 0; j < matriz->filas; j++) {
+      nuevaMatriz->celdas[i][j] = matriz->celdas[j][i];
+    }
+  }
+
+  return nuevaMatriz;
+}
+
+TMatriz calcularMatrizDeterminantes(TMatriz matriz) {
+
+  if (matriz->filas != matriz->columnas) {
+    return NULL;
+  }
+
+  TMatriz nuevaMatriz = crearMatrizVacia(matriz->filas, matriz->columnas);
+
+  for (int i = 0; i < matriz->filas; i++) {
+    for (int j = 0; j < matriz->columnas; j++) {
+
+      TMatriz matrizReducida =
+          crearMatrizVacia(matriz->filas - 1, matriz->columnas - 1);
+
+      for (int k = 0; k < i; k++) {
+        for (int h = 0; h < j; h++) {
+          cargarMatriz(matrizReducida, k, h, matriz->celdas[k][h]);
+        }
+        for (int h = j + 1; h < matriz->columnas; h++) {
+          cargarMatriz(matrizReducida, k, h - 1, matriz->celdas[k][h]);
+        }
+      }
+      for (int k = i + 1; k < matriz->filas; k++) {
+        for (int h = 0; h < j; h++) {
+          cargarMatriz(matrizReducida, k - 1, h, matriz->celdas[k][h]);
+        }
+        for (int h = j + 1; h < matriz->columnas; h++) {
+          cargarMatriz(matrizReducida, k - 1, h - 1, matriz->celdas[k][h]);
+        }
+      }
+      float det = calcularDeterminante(matrizReducida);
+      cargarMatriz(nuevaMatriz, i, j, det);
+
+      liberarMatriz(matrizReducida);
+    }
+  }
+
+  return nuevaMatriz;
+}
+
+TMatriz calcularAdjunta(TMatriz matriz) {
+
+  TMatriz matrizNueva = calcularMatrizDeterminantes(matriz);
+
+  if (matrizNueva == NULL) {
+    return NULL;
+  }
+
+  for (int i = 0; i < matriz->filas; i++) {
+    for (int j = 0; j < matriz->columnas; j++) {
+
+      if ((i + j) % 2 == 1) {
+        matrizNueva->celdas[i][j] = -matrizNueva->celdas[i][j];
+      }
+    }
+  }
+  matrizNueva = calcularTraspuesta(matrizNueva);
+
+  return matrizNueva;
+}
+
+TMatriz calcularInversa(TMatriz matriz) {
+
+  float det = calcularDeterminante(matriz);
+
+  if (det == 0) {
+    return NULL;
+  }
+
+  TMatriz matrizInversa = crearMatrizVacia(matriz->filas, matriz->columnas);
+  TMatriz matrizAdjunta = calcularAdjunta(matriz);
+
+  for (int i = 0; i < matriz->filas; i++) {
+    for (int j = 0; j < matriz->columnas; j++) {
+
+      float aCargar = (1/det) * matrizAdjunta->celdas[i][j];
+
+      cargarMatriz(matrizInversa, i, j, aCargar);
+
+    }
+  }
+
+  liberarMatriz(matrizAdjunta);
+
+  return matrizInversa;
 }
