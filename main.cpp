@@ -1,6 +1,6 @@
-
-#include "include/matriz.h"
 #include <cstdio>
+#include <iostream>
+#include "include/AVLMatrices.h"
 int main() {
 
   TMatriz m1 = crearMatrizVacia(3, 3);
@@ -40,8 +40,6 @@ int main() {
   imprimirMatriz(m8);
   TMatriz m9 = multiplicarMatrices(m5, m8);
   imprimirMatriz(m9);
-  
-
 
   for (int i = 0; i < filasMatriz(m2); i++) {
     for (int j = 0; j < columnasMatriz(m2); j++) {
@@ -51,7 +49,6 @@ int main() {
 
   imprimirMatriz(m1);
   imprimirMatriz(m2);
-
 
   TMatriz m3 = multiplicarMatrices(m1, m2);
 
@@ -74,6 +71,19 @@ int main() {
   } else {
     printf("la suma de matrices devuelve NULL, revisar filas y columnas");
   }
+
+  TAVLMatriz avl = crearAVLMatrices();
+  insertar(avl, m1, 1);
+  insertar(avl, m2, 2);
+  insertar(avl, m3, 3);
+  insertar(avl, m4, 4);
+  insertar(avl, m5, 5);
+  insertar(avl, m6, 6);
+  insertar(avl, m7, 7);
+  insertar(avl, m8, 8);
+  insertar(avl, m9, 9);
+  imprimirPreOrden(avl);
+
 
 
   liberarMatriz(m1);

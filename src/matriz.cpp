@@ -39,7 +39,6 @@ TMatriz crearMatrizVacia(int n, int m) {
 void liberarMatriz(TMatriz &matriz) {
   delete[] matriz->celdas[0];
   delete[] matriz->celdas;
-
   delete matriz;
 
   matriz = NULL;
@@ -246,9 +245,11 @@ TMatriz calcularAdjunta(TMatriz matriz) {
       }
     }
   }
-  matrizNueva = calcularTraspuesta(matrizNueva);
+  TMatriz aRetornar = calcularTraspuesta(matrizNueva);
 
-  return matrizNueva;
+  liberarMatriz(matrizNueva);
+
+  return aRetornar;
 }
 
 TMatriz calcularInversa(TMatriz matriz) {
@@ -258,6 +259,9 @@ TMatriz calcularInversa(TMatriz matriz) {
   if (det == 0) {
     return NULL;
   }
+  if (det < 0) {
+    det = -det;
+  }
 
   TMatriz matrizInversa = crearMatrizVacia(matriz->filas, matriz->columnas);
   TMatriz matrizAdjunta = calcularAdjunta(matriz);
@@ -265,10 +269,9 @@ TMatriz calcularInversa(TMatriz matriz) {
   for (int i = 0; i < matriz->filas; i++) {
     for (int j = 0; j < matriz->columnas; j++) {
 
-      float aCargar = (1/det) * matrizAdjunta->celdas[i][j];
+      float aCargar = (1 / det) * matrizAdjunta->celdas[i][j];
 
       cargarMatriz(matrizInversa, i, j, aCargar);
-
     }
   }
 

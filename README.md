@@ -6,9 +6,10 @@ usar
 
 TODO: 
 
-- agregar funcion para traspuesta
-- agregar funcion para adjunta
-- agregar funcion para inversa
 
-- agregar arbol de busqueda AVL para guardar matrices por indice
+- AVL:
+    - agregar busqueda por indices.
+    - liberar memoria.
+    - agregar funcion de eliminar nodo.
+
 - vincular con una base de datos
